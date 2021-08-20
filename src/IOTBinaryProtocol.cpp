@@ -177,6 +177,9 @@ bool IOTBinaryProtocol::hasMessage()
         return false;
     }
 
+    this->error = IOTError::NO_ERROR;
+    this->error_byte = 0;
+
     while (this->stream.available() > 0) {
         byte in_byte = this->stream.read();
         switch (this->state) {
@@ -185,9 +188,8 @@ bool IOTBinaryProtocol::hasMessage()
                     this->state = IOTState::W_CMD;
                 }
                 else {
-                    this->stream.print("Not LEAD byte: 0x");
-                    this->stream.print(in_byte, HEX);
-                    this->stream.print("\n");
+                    this->error = IOTError::NOT_LEAD_BYTE;
+                    this->error_byte = in_byte;
                 }
                 break;
             case IOTState::W_CMD:
@@ -197,9 +199,8 @@ bool IOTBinaryProtocol::hasMessage()
                     this->msg_reg_id = 0;
                 }
                 else {
-                    this->stream.print("Not COMMAND byte: 0x");
-                    this->stream.print(in_byte, HEX);
-                    this->stream.print("\n");
+                    this->error = IOTError::WRONG_COMMAND;
+                    this->error_byte = in_byte;
                     this->state = IOTState::IDLE;
                 }
                 break;
@@ -224,9 +225,8 @@ bool IOTBinaryProtocol::hasMessage()
                     this->msg_data_len = 0;
                 }
                 else {
-                    this->stream.print("Not DATA_TYPE byte: 0x");
-                    this->stream.print(in_byte, HEX);
-                    this->stream.print("\n");
+                    this->error = IOTError::WRONG_DATA_TYPE;
+                    this->error_byte = in_byte;
                     this->state = IOTState::IDLE;
                 }
                 break;
@@ -386,4 +386,14 @@ double IOTBinaryProtocol::getMessageDataDouble()
     byte len = sizeof(double);
     memcpy(&val, this->msg_data, len);
     return val;
+}
+
+IOTError IOTBinaryProtocol::getParsingError()
+{
+    return this->error;
+}
+
+byte IOTBinaryProtocol::getErrorByte()
+{
+    return this->error_byte;
 }

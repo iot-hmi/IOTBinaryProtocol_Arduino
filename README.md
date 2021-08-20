@@ -54,3 +54,26 @@ void serialEvent(){
     }
 }
 ```
+
+## Parsing Errors
+
+We can also check parsing errors when hasMessage() returns false.
+
+```c++
+void serialEvent(){
+    bool avil = p.hasMessage();
+    if (avil) {
+        // processing the message
+    }
+    else {
+        IOTError error = p.getParsingError();
+        if (error == IOTError::WRONG_COMMAND) {
+            byte error_byte = p.getErrorByte();
+            Serial.print("The wrong command byte is: 0x");
+            Serial.print(error_byte, HEX);
+            Serial.print("\n");
+        }
+    }
+}
+
+```

@@ -8,6 +8,11 @@ enum class IOTState
     IDLE, W_CMD, W_RID_LOW, W_RID_HIGH, W_DATA_TYPE, W_LEN_LOW, W_LEN_HIGH, W_DATA, W_FLUSH
 };
 
+enum class IOTError
+{
+    NO_ERROR, NOT_LEAD_BYTE, WRONG_COMMAND, WRONG_DATA_TYPE
+};
+
 enum class IOTCommand
 {
     SET_REG = 0,
@@ -63,6 +68,8 @@ class IOTBinaryProtocol
         float getMessageDataFloat();
         double getMessageDataDouble();
         uint16_t fillMessageDataToBuf(byte* buf, uint16_t buf_size);
+        IOTError getParsingError();
+        byte getErrorByte();
     private:
         Stream& stream;
         IOTCommand msg_cmd;
@@ -72,6 +79,8 @@ class IOTBinaryProtocol
         uint16_t data_count;
         byte* msg_data;
         IOTState state;
+        IOTError error;
+        byte error_byte;
 
         void sendMessageHeader(IOTCommand ctype, uint16_t rid);
         void sendPayloadHeader(IOTData dtype, uint16_t dsize);
