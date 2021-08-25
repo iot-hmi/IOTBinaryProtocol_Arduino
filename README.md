@@ -50,7 +50,7 @@ void serialEvent(){
             && p.getMessageRegisterID() == 0x3) {
                 register3 = p.getMessageDataInt();
         }
-        p.flushMessage();
+        p.flushMessage();  // must call this function to start next parsing
     }
 }
 ```
