@@ -1,13 +1,13 @@
 IOTBinaryProtocol Library for Arduino
 =====================================
 
-This library provide easy to use functions for sending and parsing IOT binary protocol messages. You can use it with any Stream objects, like Serial and Wire, etc.
+This library provides an easy way for sending and parsing IOT binary protocol messages. You can use it with any Stream objects, like Serial and Wire, etc.
 
-The library is tesed with UNO and IDE 1.8.15.
+The library is tesed with ARDUINO UNO and IDE 1.8.15.
 
 ## Sending Messages
 
-For example, send a message to set value of register3 to 100 every second.
+For example, sending a message to set the value of register3 to 100 every second:
 
 ```c++
 #include "IOTBinaryProtocol.h"
@@ -28,7 +28,7 @@ void loop() {
 
 ## Parsing Messages
 
-For example, set value of a variable if received a SET_REG message.
+For example, seting the value of a variable if a SET_REG message is received.
 
 ```c++
 #include "IOTBinaryProtocol.h"
