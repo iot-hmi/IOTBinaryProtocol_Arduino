@@ -28,7 +28,7 @@ void loop() {
 
 ## Parsing Messages
 
-For example, seting the value of a variable if a SET_REG message is received.
+For example, setting the value of a variable if a SET_REG message is received.
 
 ```c++
 #include "IOTBinaryProtocol.h"
